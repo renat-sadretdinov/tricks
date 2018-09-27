@@ -1,0 +1,153 @@
+0) go to the project directory via the terminal
+1) inside the project directory enter "pod init" via the terminal
+2) enter the command "open -a Xcode Podfile" to open the 1)-step new file via the Xcode
+3) uncomment the second line in that file and right before the "end" write the interesting pods, for example (use single quotes):
+	pod 'SwiftyJSON'
+	pod 'Alamofire'
+	pod 'SVProgressHUD'
+4) close the Podfile and close the Xcode
+5) enter the command "pod install" via the terminal
+6) there will be some new files created by pod including "project_name.xcworkspace" as a new staring project point
+
+7) the terminal's game:	> emacs -batch -l dunnet
+
+8) to git rid of the warnings:
+	1) add these lines to the very end of Podfile:
+	post_install do |installer|
+	    installer.pods_project.targets.each do |target|
+        	target.build_configurations.each do |config|
+	            config.build_settings['CLANG_WARN_DOCUMENTATION_COMMENT'] = 'NO'
+        	end
+	    end
+	end
+	2) close workspace
+	3) > pod update
+
+import UIKit
+import Firebase
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  var window: UIWindow?
+
+  func application(_ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?)
+    -> Bool {
+    FirebaseApp.configure()
+    return true
+  }
+}
+
+9) closure expression syntax:
+	{ (parameters) -> return type in statements }
+
+10) in order to embed everything inside the navigation controller:
+	1) select initial view controller
+	2) editor -> embed in -> navigation controller
+
+11) firebase rules:
+	1) for the test:
+	{
+	  "rules": {
+	    ".read": true,
+	    ".write": true
+	  }
+	}
+	2) for the authorised users:
+	{
+	  "rules": {
+	    ".read": "auth != null",
+	    ".write": "auth != null"
+	  }
+	}
+
+12) embed navigation controller:
+	Main.storyboard -> check Yellow button -> Menu:Editor -> Embed in -> Nav Cont
+
+13) app life cycle:
+	App Launched -> App Visible -> App Recedes into Background -> Resources Reclaimed
+
+14) using UserDefaults (for small pieces of info only because it's not a DB)(not for user-defined objects only for simple standard data types):
+	class {
+		override func viewDidLoad() {
+			if let items = defaults.array(forKey: "todoListArray") as? [String] {
+				itemArray = items
+			}
+		}
+		var itemArray = ["Find Mike", "Buy Eggos", "Destory Demogorgon"]
+		let defaults = UserDefaults.standard
+		some func() {
+			self.defaults.set(self.itemArray, forKey: "todoListArray")
+		}
+	}
+
+15) singleton:
+	class Car {
+	    var colour = "Red"
+	    static let singletonCar = Car()
+	}
+
+	let myCar = Car.singletonCar
+	myCar.colour = "Blue"
+
+	let yourCar = Car.singletonCar
+	print(yourCar.colour)
+
+16) about data storages:
+	UserDefaults -> Quckly persist small bits of data e.g. top score, player nickname.
+	Codable -> Flash freeze custom objects.
+	Keychain -> Save small bits of data securely.
+	SQLite -> Persist large amounts of data and query it.
+	Core Data -> Object-oriented database.
+	Realm -> A faster and easier database solution.
+
+17) CRUD (Create, Read, Update, Destroy)
+
+18) Configure CoreData:
+	1) use Core Data check;
+	1.1) or add Core Data Module: File->New File->Core Data->Data Model;
+	2) the Project Navigator has a new file of CoreDataTest.xcdatamodeld;
+	3) AppDelegate.swift has whole bunch of green text;
+	3.1) or create empty project with "use Core Data" and copy the AppDelegate.swift file's content from the end till the applicationWillTerminate() and paste it to the current project's AppDelegate.swift;
+	4) import CoreData into the AppDelegate.swift;
+	5) if it was 3.1 step then rename the name of data model to match the .xcdatamodeld file let container = NSPersistentContainer(name: "DataModel");
+	6) uncheck the optional to make the Attribute required;
+	7) for Entity set the value of Current Product Module for the field of Module;
+	8) in AppDelegate.swift delete all comments for the pasted methods;
+	9) in AppDelegate.swift delete all methods between didFinishLaunchingWithOptions and applicationWillTerminate;
+	10) the NSPersistentContainer is where we're going to store the data (sqlite db);
+	11) the context is where the data manipulations are going to happen before it would be saved into the container;
+
+19) CoreData's equivalents:
+	Database - Core Data - OOP:
+	Table - Entity - Class
+	Field - Attribute - Property
+
+20) the keyword of "lazy" means that your only occupy the memory when it's needed;
+
+21) in order to split up the functionality of a view controller it's possible to extend the view controller's class definition:
+	extension TodoListViewController: UISearchBarDelegate {}
+
+22) implement Search:
+	1) put Search Bar above Navigation Bar;
+	2) make a view controller to be UISearchBarDelegate:
+		class TodoListViewController: UITableViewController, UISearchBarDelegate
+	3) from "Search Bar" drag the line to the yellow of the view where it is;
+	4) insert UISearchBarDelegate's methods in view controller;
+
+23) marker:
+	// MARK: - Something
+	(the dash of - means the horizontal line that splits the menu
+
+24) predicates for sqlite queries:
+	https://academy.realm.io/posts/nspredicate-cheatsheet/
+	https://nshipster.com/nspredicate/
+
+25) external and internal parameters:
+	func loadItems(with request: NSFetchRequest<Item>) {}
+	with - external (used when we call the function
+	request - internal (used inside the function definition
+
+26) default value for the method's parameter:
+	func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {}

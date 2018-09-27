@@ -1,0 +1,78 @@
+0) Working Directory ->(> git add) Staging Area ->(> git commit) Local Repository
+
+1) the beginning
+
+> git init
+> git status
+> git add file_name
+> git commit -m "commit_message_in_THE_PRESENT_TENSE"
+
+2) to show all commits
+
+> git log
+
+3) to add everything in the working directory to the stage
+
+> git add .
+
+3.1) to undo the whole bunch of file added to the staging area (-r means recursive)
+
+> git rm --cached -r .
+
+4) to look at the different between working file and staging area file
+
+> git diff file_name
+
+5) to roll back the staging area file to the working directory
+
+> git checkout file_name
+
+6) to create remote repository
+
+> git remote add origin copied_from_the_GitHub_address_string
+
+7) to push in remote repository (origin - repo's name, master -branch's name)
+
+> git push -u origin master
+
+8) to create hidden file of ".gitignore"
+
+> touch .gitignore
+
+9) to get swift .gitignore file
+
+https://github.com/github/gitignore -> Swift.gitignore
+
+10) how to clone the Remote Repository files to the Working Directory
+
+> git clone copied_link_to_the_remote
+
+11) how to make a new branch
+
+> git branch new_branch_name
+
+12) how to get list of all possible branches (asterisk shows the current branch)
+
+> git branch
+
+13) how to switch to the alternative branch
+
+> git checkout alternative_branch_name
+
+14) how to fix not showing the branches by log command
+
+> git log --decorate
+
+15) how to make an absolutely beautiful output while log command being executed
+
+> git log -- graph --all --decorate
+
+16) how to merge branches (performs inside the destination branch)
+
+> git merge branch_to_merge_from_name
+
+17) how to fork repo to your account
+
+get find the needed report via github's find and press "fork" button
+
+18) 

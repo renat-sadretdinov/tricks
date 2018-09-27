@@ -1,0 +1,71 @@
+Вне темы: 13:7F:B4:EA:CE:2C:D3:24:F2:9C:7E:9C:3D:AA:EA:59 - отладка по USB с этим цифровым отпечатком.
+
+1) string interpolation:
+	1) "$name" for the variables
+	2) "${apples * 4}" for the statements
+2) read the enter within the command line:
+	val age = readLine()!!.toInt()
+
+3) how to init via the if-condition:
+	1) val message: String = if (age < 18) {
+        	"You're too young to vote"
+	}
+	else if (age == 100) {
+        	"Congratulations"
+	}
+	else {
+        	"You can vote"
+	}
+	2) the much better way:
+	val message: String = when {
+        	age < 18 -> "You're too young to vote"
+	        age == 100 -> "Congratulations"
+        	else -> "You can vote"
+	}
+
+4) beauty output with println(). The starting indentions are matter:
+	println("""
+            name: $name
+            lives: $lives
+            level: $level
+            score: $score
+            """)
+
+5) the delete from the list method (nice architecture):
+    fun dropLoot (item: Loot): Boolean {
+        return if (inventory.contains(item)) {
+            inventory.remove(item)
+        } else {
+            false
+        }
+    }
+
+6) the key word open in a class declaration allows to be "super class":
+	open class Enemy (val name: String, var hitPoints: Int, var lives: Int) {}
+
+7) how to use constraints:
+	1. Every view must have at least two constraints: 1 horizontal and 1 vertical.
+	2. A vertical plane of a view can be constrained only to another vertical plane; and baselines and constrain only to other baselines.
+	3. Each constraint handle can be used for just one constraint, but it's possible to create multiple constraints (from different widgets) to the same anchor point.
+
+8) find view by id example:
+	private var button: Button? = null // at the very beginning
+	button = findViewById<Button>(R.id.button) // inside the onCreate
+
+8.1) find view by id while creating a widget example:
+	val button: Button = findViewById<Button>(R.id.button) // inside the onCreate
+	
+9) long way to set an onclick handler for the button:
+	button?.setOnClickListener(object: View.OnClickListener{ // inside the onCreate
+		override fun onClick(p0: View?) {}
+	})
+
+10) how to set the textView as a scrollable widget:
+	textView?.movementMethod = ScrollingMovementMethod()
+
+11) ternary operator:
+	if (a) b : c
+
+12) if device has been rotated then android destroys the activity and creates new one for new orientation;
+
+13) 

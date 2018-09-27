@@ -1,0 +1,25 @@
+1) exports from the module:
+	module.exports.log = logFunc;
+	module.exports = logFunc; // if there is only one object (logFunc) to export
+
+2) node wraps the file's content into the function:
+	(function (exports, require, module, __filename, __dirname) {
+//		file content right here
+	})
+
+3) string interpolation example:
+	console.log(`Total Memory: ${totalMemory}`);
+
+4) event emitter:
+	const EventEmitter = require('events');
+	const emitter = new EventEmitter();
+
+	emitter.on('logging', (eventArg) => {
+	    console.log('Log: \"' + eventArg.text + '\"');
+	});
+	emitter.emit('logging', {text: 'Some text to log'});
+
+5) npm init (create file of package.json)
+	npm init --yes (create file of package.json with default values)
+
+6) 
