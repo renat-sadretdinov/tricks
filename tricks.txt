@@ -151,3 +151,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 26) default value for the method's parameter:
 	func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {}
+
+27) see the path to the application on a hard drive:
+	let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+	Example: Optional(file:///Users/renatsadretdinov/Library/Developer/CoreSimulator/Devices/56E00613-22FA-4A9F-A5A0-BE95377626F9/data/Containers/Data/Application/45FD5382-0BAE-4360-8D5C-6EAB9058EA98/Documents/Items.plist)
+	In order to get sqlite db the path is ... /....EA98/Library/Application Support/DataModel.sqlite
+
+28) first sqlite graph:
+	Category: Relationships "items"
+	Item: Relationships "parentCategory"
+	Control drug from Category's relationships to Item relationships: <--->>
+
+29) implementation CoreData interactive with TableView by steps:
+	1) insert a new TableView between the Navigation Controller and the  existing TableView
+	2) control+drug from Nav Cont's yellow to the new TV and set the type for this new TV as a "root view controller"
+	3) control+drug from new TV's yellow to the old TV and set the type for this old TV as a "modal" and an ID as a "goToItems"
+	4) hit blue header area and reset the titles: "Todoey" for a new TV and "Items" for the old one
+	5) add BarButtonItem to the new TV header's area and set it as a system-add
+	6) hit Table View Cell and set its identifier to "CategoryCell"
+	7) create a new Cocoa file of CategoryViewController.swift and set it for the new TV source
+	8) via the Assistant Editor control drug from the system-add button to the CategoryViewController.swift and set the Action "addButtonPressed"
+	9) delete all from the CategoryViewController.swift except vieDidLoad() and a new addButtonPressed() handler
+	10) insert 4 "// MARK: -" in CategoryViewController.swift:
+		// MARK: - TableView Datasource Methods (display all categories inside cont)
+		// MARK: - Data Manipulation Methods (saveData and loadData)
+		// MARK: - Add New Categories
+		@IBAction func addButtonPressed(_ sender: UIBarButtonItem) {}
+		// MARK: - TableView Delegate Methods
+	11) import CoreData into the CategoryViewController.swift
+	12) inside CategoryViweController.swift's very beginning initialise the variable of TableView categories' names:
+		var categoryArray = [Category]()
+	13) inside CategoryViweController.swift's very beginning initialise the constant of context:
+		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+	14) under the TableView Datasource Methods MARK override the tableView(numberOfRowsInSection) method:
+		return categoryArray.count
+	15) under the TableView Datasource Methods MARK override the tableView(cellForRowAt) method:
+		let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+		let category = categoryArray[indexPath.row]
+		cell.textLabel?.text = category.name
+		return cell
+	16) under the Data Manipulation Methods MARK define the loadCategories() method:
+		func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+			do {
+				categoryArray = try context.fetch(request)
+			} catch {
+				print("Error fetching data from context \(error)")
+			}
+			tableView.reloadData()
+		}
+	17) 
