@@ -20,6 +20,132 @@
 	emitter.emit('logging', {text: 'Some text to log'});
 
 5) npm init (create file of package.json)
-	npm init --yes (create file of package.json with default values)
+	> npm init --yes (create file of package.json with default values)
 
-6) 
+6) semantic versioning: Major.Minor.Patch
+	Patch version - for a bug fix
+	Minor version - for additional fitches that don't break an existing API (the Patch version would be 0 because no bug yet found)
+
+7) the carrot symbol ^ in front of version means that we are interested in all subversion of it version: ^4.13.6 - all Minor.Patch versions are valid if the Major is 4. In these cases the form of 4.x is equal.
+
+8) the symbol of tilde means that we are interested in all Patch versions of a current Major.Minor version: ~1.8.3 is equal to 1.8.x.
+
+9) how to look at the whole bunch of dependencies for the project:
+	> npm list
+	There is a flag --depth=0 to look at the root level of the dependencies
+
+10) how to look the dependencies for the exact package that is part of a project:
+	> npm view package_name
+	There is a flag "dependencies" to look only for the dependencies.
+	There is a flag "versions" to look at the complete list of enabled versions.
+
+11) how to install the exact version's package:
+	> npm i module_name@Major.Minor.Patch
+
+12) how to get the info about which modules are being outdated:
+	> npm outdated
+
+13) how to update Minor and Patch releases:
+	> npm update
+
+14) in order to update Major version (for package.json ONLY) it's need to install package of "npm-check-updates":
+	> npm i -g npm-check-updates
+	Now it is possible to run this command:
+	> npm-check-updates
+	There is a short version for this command:
+	> ncu
+	So to install updated dependencies:
+	> npm i
+
+15) how to install the package only for the development purpose:
+	> npm i jshint --save-dev
+
+16) hot to uninstall the specified package:
+	> npm uninstall package_name
+	There is a short form for this command:
+	> npm un package_name
+
+17) how to register on npm:
+	> npm adduser
+	If there is an account at npm then:
+	> npm login
+
+18) how to publish the package (after being logged in to the npm):
+	> npm public
+	The command has to be executed inside the root directory of the project to publish. If there is an error while publishing then it is a probably the conflict between name of the project that is published and the existing project at npm that has exactly same name. The solution is go to the package.json and change the name for the published project. If it will be downloaded back again then the package.json get yet another properties.
+
+19) how to publish updated package (two ways):
+	1) update the package.json's field of version by hand; or
+	2) > npm version major|minor|patch
+	After that run > npm publish
+
+20) conventional routs for REST api (get all, get specified, update specified, delete specified, create specified):
+	GET	/api/customers
+	GET	/api/customers/1
+	PUT	/api/customers/1
+	DELETE	/api/customers/1
+	POST	/api/customers
+
+21) how to install node monitor:
+	> npm i -g nodemon
+	After that the project to be monitored runs via nodemon:
+	> nodemon index.js
+
+22) string interpolation:
+	console.log(`Listening on port ${portNumber}...`);
+
+23) how to set the environment variable:
+	> export PORT=5000
+
+24) using environment PORT or hardcode value:
+	process.env.PORT || 3000
+
+25) we use route parameters for an essential or required values and we use query parameters for anything that is optional. For example, the request http://localhost:5000/api/blogs/2018/9?sortBy=name may be processed:
+	app.get('/api/blogs/:year/:month', (req, res) => {
+		var resObj = {
+			params: req.params,
+			query: req.query
+		};
+		res.send(resObj);
+	});
+
+26) the little example of the responsing for get request:
+	const course = courses.find(c => c.id === parseInt(req.params.id));
+	if (!course) {
+		res.status(404).send('The course with the given ID was not found.');
+		return;
+	}
+	res.send(course);
+
+27) it's must require to always validate user's input either manually or vie npm packages (like 'joi'):
+	app.post('/api/courses', (req, res) => {
+		if (!req.body.name || req.body.name.length < 3) {
+			// 400 Bad Request
+			res.status(400).send('Name is required and should be minimum 3 characters.');
+			return;
+		}
+		const course = {
+			id: courses.length + 1,
+			name: req.body.name
+		};
+		courses.push(course);
+		res.send(course);
+	});
+
+28) best practise is the order of how to place the things at the beginning of the class:
+	1) require()'s;
+	2) middlewares;
+	3) constants.
+
+29) example of usage package of "joi" for the input validation in a route:
+	// in the module above: const Joi = require('joi'); // Joi is a class - Uppercased
+	const schema = {
+		name: Joi.string().min(3).required()
+	};
+	const result = Joi.validate(req.body, schema);
+	if (result.error) {
+		res.status(400).send(result.error.details[0].message);
+		return;
+	}
+
+30) 

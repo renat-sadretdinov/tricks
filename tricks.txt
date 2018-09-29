@@ -199,4 +199,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			}
 			tableView.reloadData()
 		}
-	17) 
+	17) under the TableView Delegate Methods MARK override the tableView(didSelectRowAt) to make the current selection only for short time:
+		tableView.deselectRow(at: indexPath, animated: true)
+	18) under the Data Manipulation Methods MARK define the saveCategories() method:
+		func saveCategories() {
+			do {
+				try context.save()
+			} catch {
+				print("Error saving context \(error)")
+			}
+			tableView.reloadData()
+		}
+	19) under the Add New Categories MARK define the addButtonPressed() handler:
+		var textField = UITextField()
+		let alert = UIAlertController(title: "Add New Todoey Category", message: "", preferredStyle: .alert)
+		let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
+			let newCategory = Category(context: self.context)
+			newCategory.name = textField.text!
+			if (newCategory.name?.count)! > 0 {
+				self.categoryArray.append(newCategory)
+				self.saveCategories()
+			}
+		}
+		alert.addTextField { (alertTextField) in
+			alertTextField.placeholder = "Create new category"
+			textField = alertTextField
+		}
+		alert.addAction(action)
+		present(alert, animated: true, completion: nil)
+	20) 
