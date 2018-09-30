@@ -86,6 +86,8 @@
 	DELETE	/api/customers/1
 	POST	/api/customers
 
+20.1) by convention, PUT returns the updated object, DELETE returns the deleted object, POST returns the created object.
+
 21) how to install node monitor:
 	> npm i -g nodemon
 	After that the project to be monitored runs via nodemon:
@@ -99,6 +101,15 @@
 
 24) using environment PORT or hardcode value:
 	process.env.PORT || 3000
+
+24.1) process.env.NODE_ENV return node environment for the application. If it's not set is going to be undefined.
+
+24.2) console.log(`NODE_ENV: ${process.env.NODE_ENV}`); // show the value of NODE_ENV
+
+24.3) app.get('env'); // This feature is from express. However, if NODE_ENV is undefined then it returns the 'development' by default.
+
+24.4) set the environment variable to production:
+	> export NODE_ENV=production
 
 25) we use route parameters for an essential or required values and we use query parameters for anything that is optional. For example, the request http://localhost:5000/api/blogs/2018/9?sortBy=name may be processed:
 	app.get('/api/blogs/:year/:month', (req, res) => {
@@ -148,4 +159,58 @@
 		return;
 	}
 
-30) 
+30) destructing objects example:
+	const { error } = validateCourse(req.body);
+	In this case whole object would be in this constant of "error".
+
+31) example of setting the update handler:
+	app.put('/api/courses/:id', (req, res) => {
+	// Look up the course and if not existing, return 404
+	// The Array method of find() return the link to the finded item not the value
+	var course = courses.find(c => c.id === parseInt(req.params.id));
+	if (!course) {
+		res.status(404).send('The course with the given ID was not found.');
+		return;
+	}
+	// Validate
+	// If invalid, return 400 - Bad request
+	const { error } = validateCourse(req.body);
+	if (error) {
+		// 400 Bad Request
+		// res.status(400).send(result.error);
+		res.status(400).send(result.error.details[0].message);
+		return;
+		}
+	// Update course
+	course.name = req.body.name + "R";
+	// Return the updated course
+	res.send(course);
+	});
+	// In order to use this functionality in different places
+	function validateCourse(course) {
+		const schema = {
+			name: Joi.string().min(3).required()
+		};
+		return Joi.validate(course, schema);
+	}
+
+32) the shortest way for the controlling block:
+	if (!course) {
+		res.status(404).send('The course with the given ID was not found.');
+		return;
+	}
+	is
+	if (!course)
+		return res.status(404).send('The course with the given ID was not found.');
+
+33) middleware terminates request-response cycle.
+	Technically app.get('/', (req, res) => {}); has a middleware of (req, res) => {} which gets request and either sent response back to the user or pass the cycle further to the next handler or middleware.
+	Another example of middleware is app.use(express.json()); where express.json() is a method that returns the function.
+
+34) most famous express middleware:
+	app.use(express.json()); // Checks and parses incoming request for whether it contains a json and if so populates the req.body property with this json object.
+	app.use(express.urlencoded( {extended: true} )); // parses string of key-value pairs (key=value&key=value parses) and populate the req.body property.
+	app.use(express.static('public')); // serves the content this specified folder back to the browser. So it's possible to see readme.txt from this folder by typing localhost:5000/readme.txt in the browser.
+	Whole bunch of middleware are at expressjs.com->Resources->Middleware
+	Recommended: helmet, morgan
+35) 

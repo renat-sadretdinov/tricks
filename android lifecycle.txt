@@ -1,0 +1,18 @@
+	When the Activity is started for the first time, its onCreate method is called. Because this is the first time the activity is started, there is no saved state.
+	The savedInstanceState bundle is null, because nothing needs to be restored.
+	The next methods to be called are onStart and onResume.
+	Once onStart has been called, the activity is visible but may not yet be in a state where the user can interact with it. This is the visible lifetime of the activity, and happens between the calls to onStart and onStop. During this part of the lifecycle, the activity may be paused.
+	Once onResume has been called, the activity is in the foreground and is in a running state. It's in front of all other activities and the user can interact with it quite happily. This is the foreground lifetime of the activity, which lasts between the calls to onResume and onPause.
+	There are many events that can result in the activity going between the running and paused states. Things like the device going to sleep, for example. If you put code in the onPause and onResume functions, then it shouldn't do a lot.
+	While the activity is running, another activity could be brought into the foreground or the phone could go to sleep.
+	The onPause method is called before the current activity loses control. The activity is still in a happy state, and there's no need to save the state and restore it again - it's just no longer in the foreground. (If you display a dialogue on top of your activity, you'll also put the activity into the paused state(so onPause will be called)).
+	Google recommend that you don't perform intensive operations in onPause. They've changed their recommendation, they used to state that you had to be very careful to make sure that your onPause function completed its tasks very quickly. (Failing to do that could result in the next activity not receiving the focus in time, resulting in the user being unable to answer their phone, for example).
+	Updating a remote database is a good example of something that you should not do in here - perform things like remote updates in the onStop function instead.
+	What happens next, after onPause is called, depends on what goes on with the system. If the users brings the activity back to the foreground (by dismissing a dialogue, for example) then onResume is called.
+	If the system needs more memory and decides to kill the app, then onStop will be called.
+	If the user presses the Back button to close your activity, then the activity is destroyed completely. The only trace of it then is in the Recent Apps, but it's no longer running at all and that's the end of its lifecycle. If the user launches it again then everything start from the top. (There is no saved state, so onSaveInstanceState will not be called and the Bundle passed to onCreate will be null).
+	However, if the activity is destroyed as a result of a configuration change or because Android needs its resources, then Android "remembers" that it did exist and was killed by the system. When the app is restarted by the user, its onCreate is called, with a Bundle containing the saved state.
+	In the case of a configuration change, the same thing happens but the activity is restarted automatically - there's no need for the user to launch it again.
+	If Android kills an app that is in the foreground then something's gone wrong, it will always prefer to kill background processes to recover memory - not the foreground activity.
+	Obviously, the user powering off the device is one case where a foreground Activity will be destroyed.
+	onDestroy may not always be called.

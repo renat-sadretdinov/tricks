@@ -68,4 +68,10 @@
 
 12) if device has been rotated then android destroys the activity and creates new one for new orientation;
 
-13) 
+13) how to use logging:
+	private val TAG = "MainActivity" // out of the class definition
+	Log.d(TAG, "onCreate: called") // inside the method to track for
+	// the value of tag is suitable for a filtering output in "Logcat" tab.
+	// it's possible to write something to this Logcat pane (for example margins).
+
+14) 
