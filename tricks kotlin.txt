@@ -74,4 +74,71 @@
 	// the value of tag is suitable for a filtering output in "Logcat" tab.
 	// it's possible to write something to this Logcat pane (for example margins).
 
-14) 
+14) these methods help to control an application's life cycle:
+	override fun onCreate(savedInstanceState: Bundle?) {
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onStop() {
+        super.onStop()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+15) how to save and restore instance state (not data):
+	private const val TEXT_CONTENTS = "TextContent"
+
+	override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+		Log.d(TAG, "onRestoreInstanceState: called")
+	        super.onRestoreInstanceState(savedInstanceState)
+	        textView?.text = savedInstanceState?.getString(TEXT_CONTENTS, "")
+	}
+	override fun onSaveInstanceState(outState: Bundle?) {
+		Log.d(TAG, "onSaveInstanceState: called")
+		super.onSaveInstanceState(outState)
+		outState?.putString(TEXT_CONTENTS, textView?.text.toString())
+	}
+
+15.1) the const values must be declared outside the class
+
+16) about lazy block:
+	private val displayOperation by lazy { findViewById<TextView>(R.id.operation) }
+	// the lazy block won't execute until the displayOperation was called for the first time
+	// in case you are using this in the Main Thread and you are sure that it’s not going to be used in different threads, then you can avoid all of this overhead to make it Thread Safe
+
+17) !! is unsafe nullable type (T?) conversion to a non-nullable type (T). It will throw NullPointerException if the value is null.
+
+18) how to get the widgets of the activity like the properties (by their id):
+	import kotlinx.android.synthetic.main.activity_main.*
+	b_0.setOnClickListener(listener) // b_0 is id for the widget of the button
+
+19) how to get landscape layout:
+	1) press "Orientation for Preview"
+	2) press "Create Landscape Variation"
+
+20) 

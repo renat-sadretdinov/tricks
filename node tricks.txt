@@ -213,4 +213,18 @@
 	app.use(express.static('public')); // serves the content this specified folder back to the browser. So it's possible to see readme.txt from this folder by typing localhost:5000/readme.txt in the browser.
 	Whole bunch of middleware are at expressjs.com->Resources->Middleware
 	Recommended: helmet, morgan
-35) 
+
+35) using Debug module instead of console.log():
+	// require and set the functions that gets parameter to show it in a console
+	const startupDebugger = require('debug')('app:startup');
+	const dbDebugger = require('debug')('app:db');
+	// using created function
+	startupDebugger('Morgan enabled...');
+	// set the environment variables (examples)
+	> export DEBUG=app:startup
+	> export DEBUG=app:startup,app:db
+	> export DEBUG=app:*
+	// set the specific value for environment variable right before the start
+	> DEBUG=app:db nodemon index.js
+
+36) 
